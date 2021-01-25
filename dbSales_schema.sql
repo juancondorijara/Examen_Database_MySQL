@@ -1,0 +1,66 @@
+/* Gestionar la base de datos */
+-- Borrar base de datos
+DROP DATABASE IF EXISTS SALES;
+
+-- Crear base de datos
+CREATE DATABASE SALES
+DEFAULT CHARACTER SET utf8;
+
+-- Poner en uso la base de datos
+USE SALES;
+
+-- Ver cual es la base de datos en uso
+SELECT DATABASE();
+
+/* Crear tablas */
+
+-- Crear tabla CUSTOMER
+CREATE TABLE CUSTOMER (
+    CUSTNO char(8),
+    CUSTFIRSTNAME varchar(20) NOT NULL,
+    CUSTLASTNAME varchar(20) NOT NULL,
+    CUSTCITY varchar(20),
+    CUSTSTATE char(2),
+    CUSTZIP char(9),
+    CUSTBAL decimal(10,2),
+    CONSTRAINT CUSTOMER_PK PRIMARY KEY (CUSTNO)
+);
+
+-- Crear tabla EMPLOYEE
+CREATE TABLE EMPLOYEE (
+    EMPNO char(8),
+    EMPFIRSTNAME varchar(20) NOT NULL,,
+    EMPLASTNAME varchar(20) NOT NULL,,
+    EMPPHONE char(10),
+    EMPEMAIL varchar(30) NOT NULL,,
+    CONSTRAINT EMPLOYEE_PK PRIMARY KEY (EMPNO)
+);
+
+-- Crear tabla ORDERTBL
+CREATE TABLE ORDERTBL (
+    ORDNO char(8),
+    ORDDATE date,
+    CUSTNO char(8),
+    EMPNO char(8),
+    CONSTRAINT ORDERTBL_PK PRIMARY KEY (ORDNO)
+);
+
+SHOW TABLES;
+
+/* Crear las relaciones */
+
+-- Relacionar la tabla CUSTOMER - ORDERTBL
+ALTER TABLE ORDERTBL
+ADD CONSTRAINT CUSTOMER_ORDERTBL_CUSTNO
+FOREIGN KEY (CUSTNO) REFERENCES CUSTOMER (CUSTNO);
+
+-- Relacionar la tabla EMPLOYEE - ORDERTBL
+ALTER TABLE ORDERTBL
+ADD CONSTRAINT EMPLOYEE_ORDERTBL_EMPNO
+FOREIGN KEY (EMPNO) REFERENCES EMPLOYEE (EMPNO);
+
+-- Listar las relaciones entre tablas
+SELECT * 
+FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS 
+WHERE table_schema="SALES" 
+    AND constraint_type="FOREIGN KEY";
